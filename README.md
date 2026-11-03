@@ -1,8 +1,8 @@
 # 循理学伴 · Xunli Tutor
 
-一个用于 ChatGPT / Codex 支持的插件环境的跨学科教学插件。讲清依据与中间过程，让学习者独立实践，根据作答证据调整节奏。
+一套可用于普通聊天AI、支持Agent Skills的Agent，以及ChatGPT / Codex插件环境的跨学科教学方法。讲清依据与中间过程，让学习者独立实践，根据作答证据调整节奏。
 
-**v0.1.1** · 中文优先 · MIT · 无服务端依赖
+**v0.2.0** · 中文优先 · MIT · 无服务端依赖
 
 ## 能做什么
 
@@ -13,7 +13,27 @@
 - 学科切换：编程、数学、语言、记忆、操作与分析任务采用不同讲练方式。
 - 学习交接：导出主题、作答证据、提示程度、未验证内容和下一步。
 
-这是包含教学 Skill、协议与模板的插件。教学仍由宿主模型完成。首版没有独立聊天窗口、内置运行沙箱、云端档案或自动跨聊天记忆；有宿主文件工具时，可按要求保存本地学习记录。
+提供完整单文件协议、标准Agent Skill和插件三种交付形式，教学由宿主模型完成。不要求特定厂商工具；没有文件工具时可以直接在聊天里输出学习记录。没有独立聊天窗口、内置运行沙箱、云端档案或自动跨聊天记忆。
+
+## 选择使用方式
+
+| 你的AI或Agent | 使用入口 | 如何开始 |
+|---|---|---|
+| 普通聊天AI，支持附件或粘贴文本 | [完整单文件协议](portable/xunli-tutor.md) | 下载并上传该文件，或把全文放入对话／自定义指令 |
+| 支持Agent Skills的Agent | [标准技能目录](skills/learn-with-feedback/SKILL.md) | 复制整个`skills/learn-with-feedback/`到宿主的技能目录，保留references和assets |
+| 读取AGENTS.md的项目Agent | [AGENTS.md](AGENTS.md) | 在本仓库中打开Agent；集成到其他项目时合并教学入口，保留原项目指令 |
+| Claude Code | 标准技能目录，或本仓库[CLAUDE.md](CLAUDE.md)入口 | 项目级复制到`.claude/skills/learn-with-feedback/`，然后调用`/learn-with-feedback` |
+| 支持现有插件格式的客户端 | `plugins/xunli-tutor/` | 按下面的插件安装步骤操作 |
+
+普通聊天AI使用的启动消息：
+
+> 请完整阅读附件《循理学伴通用AI教学协议》。按它教我【主题】，目标是【希望能独立做什么】。开始前先核对必要前提，遇到未讲过或不能确认理解的内容，先问我并等待回答。
+
+完整单文件已包含所有规则、示例和模板，不需要AI追踪仓库内链接。如果只能阅读链接，可发送[单文件的GitHub Raw链接](https://raw.githubusercontent.com/S13699/xunli-tutor/main/portable/xunli-tutor.md)；无法读取外部网页时上传文件或粘贴全文，不能让AI仅凭文件名声称读过。
+
+标准技能包不依赖plugin.json、OpenAI专用UI元数据或Codex工具。不同宿主的技能发现和调用语法可能不同；如果没有自动发现，就明确提供SKILL.md及其资源。Claude Code的`.claude/skills/`与调用方式见[官方技能文档](https://code.claude.com/docs/en/skills)；通用结构见[Agent Skills规范](https://agentskills.io/specification)。
+
+本次验证覆盖文件结构、资源闭合、同步生成和独立代理的文本行为检查；没有逐一运行Claude Code、Cursor等客户端，不把格式兼容说成所有产品都已实测。
 
 ## 安装到 Codex
 
@@ -74,6 +94,9 @@ codex plugin marketplace remove xunli-tutor-local
 
 ```text
 .agents/plugins/marketplace.json    本地来源
+AGENTS.md / CLAUDE.md              项目Agent入口
+portable/xunli-tutor.md            普通聊天AI完整单文件
+skills/learn-with-feedback/        标准Agent Skills交付（生成）
 plugins/xunli-tutor/
   plugin.json                      标准插件清单
   .codex-plugin/plugin.json         Codex兼容清单
@@ -88,7 +111,13 @@ Python 3.10 或以上，在项目根目录运行：
 
 ```powershell
 python tools/validate.py
+python tools/build_portable.py --check
+python -m unittest discover -s tests -v
 ```
+
+修改教学规则时，编辑`plugins/xunli-tutor/skills/learn-with-feedback/`这一份源文件，然后运行`python tools/build_portable.py`生成标准技能和完整单文件。检查会发现两种交付的缺失或内容漂移。
+
+执行`python tools/package_release.py --output ../release`可生成源码ZIP、插件ZIP、标准技能ZIP、通用Markdown和SHA256校验和。输出目录需放在源码仓库外，避免把产物再次打入包中。
 
 结构验证不调用模型、不联网、不保存学习数据，不等于教学效果评估。行为评估需在目标模型与客户端中独立执行，方法见 `evals/README.md`。发布包在项目外构建，避免将真实学习档案、缓存和凭证放进去。
 

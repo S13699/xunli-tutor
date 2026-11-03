@@ -4,6 +4,7 @@
 
 ## 修改原则
 
+- 教学规则只编辑`plugins/xunli-tutor/skills/learn-with-feedback/`，再运行`python tools/build_portable.py`。不要手工维护生成的`skills/`和`portable/`副本。
 - 通用方法放在协议中；学科细节放在对应指南；个人偏好和真实进度留在插件包之外。
 - 不为单次失误无限累加规则。优先修改能改变教学决策的最小内容。
 - 不以唯一措辞作为通过条件；检查是否解释了关键连接、是否泄露练习答案、是否夸大能力证据。
@@ -12,6 +13,7 @@
 ## 验证
 
 1. 运行 `python tools/validate.py`。
+   同时运行`python tools/build_portable.py --check`和`python -m unittest discover -s tests -v`检查跨宿主交付。
 2. 为行为改动加入一个有输入与观察条件的场景。
 3. 在独立上下文中分别运行无 Skill 与有 Skill 的相同场景，保留输出，不把预期答案交给执行者。
 4. 记录实际失败、修订及复测；基线通过时如实记录，不为制造改进更改评分。

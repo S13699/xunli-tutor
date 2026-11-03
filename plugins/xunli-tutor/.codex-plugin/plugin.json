@@ -1,6 +1,6 @@
 {
   "name": "xunli-tutor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "跨学科交互教学：讲清依据与过程，由学习者独立实践，按作答证据调整节奏。",
   "author": {"name": "Xunli Tutor contributors"},
   "license": "MIT",

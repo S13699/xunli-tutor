@@ -1,6 +1,7 @@
 """Offline package checks using only Python's standard library (Python >= 3.10)."""
 
 import json
+import importlib.util
 import re
 import sys
 from pathlib import Path
@@ -96,6 +97,10 @@ def validate(root):
     for required in ("LICENSE", "README.md", "CONTRIBUTING.md", "evals/results.md"):
         check((root / required).is_file(), f"Missing {required}")
     check((plugin / "LICENSE").is_file(), "Plugin archive needs a license")
+    spec = importlib.util.spec_from_file_location("portable_builder", Path(__file__).with_name("build_portable.py"))
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    check(not builder.build(root, check=True), "Portable files are missing or stale; run python tools/build_portable.py")
     return checks, errors
 
 
