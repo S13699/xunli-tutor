@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "xunli-tutor",
+  "version": "0.1.1",
+  "description": "跨学科交互教学：讲清依据与过程，由学习者独立实践，按作答证据调整节奏。",
+  "author": {"name": "Xunli Tutor contributors"},
+  "license": "MIT",
+  "keywords": ["education", "tutoring", "learning", "教学", "独立实践"],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/learn-with-feedback/SKILL.md",
+      "interface": {
+        "displayName": "循理学伴",
+        "shortDescription": "讲清过程，独立实践，按证据推进",
+        "longDescription": "用于编程、数学、语言等主题的交互教学。支持概念讲解、独立实践、逐级提示、针对性纠错与学习记录导出。首版由教学 Skill 和本地模板组成，使用宿主模型与已有工具；没有独立聊天界面、云端账户或自动跨聊天记忆。",
+        "developerName": "Xunli Tutor contributors",
+        "category": "Productivity",
+        "capabilities": ["交互讲解", "独立练习与评审", "学习断点导出"],
+        "defaultPrompt": [
+          "用循理学伴教我一个新主题，先从我的目标和必要基础开始。",
+          "进入独立实践模式，只给需求、验收标准和必要提示，不替我写练习答案。",
+          "根据当前对话导出学习记录，区分已讲、已验证和待复习内容。"
+        ]
+      }
+    }
+  }
+}

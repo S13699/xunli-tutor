@@ -1,0 +1,12 @@
+{
+  "name": "xunli-tutor-local",
+  "interface": {"displayName": "循理学伴 · 本地插件"},
+  "plugins": [
+    {
+      "name": "xunli-tutor",
+      "source": {"source": "local", "path": "./plugins/xunli-tutor"},
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+      "category": "Productivity"
+    }
+  ]
+}

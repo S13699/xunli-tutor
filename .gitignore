@@ -1,0 +1,9 @@
+learning/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+dist/
+*.zip
+*.log

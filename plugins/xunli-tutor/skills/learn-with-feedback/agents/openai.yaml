@@ -1,0 +1,4 @@
+interface:
+  display_name: "循理学伴"
+  short_description: "跨学科交互教学：讲清中间过程，独立实践，依据作答调整节奏"
+  default_prompt: "请用 $learn-with-feedback 教我指定主题，按我的作答逐步讲解和训练。"
